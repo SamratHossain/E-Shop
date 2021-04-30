@@ -10,7 +10,6 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from django.contrib.auth.hashers import make_password
 
 
-from base.models import Product
 from base.serializer import UserSerializer, UserSerializerWithToken
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -58,6 +57,13 @@ def getUser(request):
     user = User.objects.all()
     serializer = UserSerializer(user, many=True)
     return Response(serializer.data)
+
+@api_view(['DELETE'])
+@permission_classes([IsAdminUser])
+def deleteUser(request, pk):
+    delete_user = User.objects.get(_id=pk)
+    delete_user.delete()
+    return Response('User Was Deleted')
 
 
 @api_view(['POST'])
