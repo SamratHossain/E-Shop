@@ -5,7 +5,7 @@ import { LinkContainer } from 'react-router-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
-import { listUser } from '../action/userActions'
+import { listUser, deleteUser } from '../action/userActions'
 
 
 function UserScreen({history}) {
@@ -16,6 +16,9 @@ function UserScreen({history}) {
     const userList = useSelector(state => state.userList)
     const {loading, error, users} = userList
 
+    const userDelete = useSelector(state => state.userDelete)
+    const { success : deleteSuccess } = userDelete
+
     const dispatch = useDispatch()
 
     useEffect(() => {
@@ -24,10 +27,10 @@ function UserScreen({history}) {
         }else{
             history.push('/login')
         }    
-    },[dispatch])
+    },[dispatch, history, deleteSuccess])
 
     const deleteHandler = (id) => {
-        console.log("user delete", id)
+        dispatch(deleteUser(id))
     }
     return (
         <div>
