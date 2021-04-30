@@ -41,6 +41,23 @@ function Header() {
                         ) :  <LinkContainer to="/login">
                                 <Nav.Link> <i className="fas fa-user"></i>Login</Nav.Link>
                             </LinkContainer>}
+
+                        {userInfo && userInfo.isAdmin && (
+                            <NavDropdown title='Admin' id='username'>
+                                <LinkContainer to="/admin/userlist">
+                                    <NavDropdown.Item>User</NavDropdown.Item>
+                                </LinkContainer>
+
+                                <LinkContainer to="/admin/productlist">
+                                    <NavDropdown.Item>Products</NavDropdown.Item>
+                                </LinkContainer>
+
+                                <LinkContainer to="/admin/orderlist">
+                                    <NavDropdown.Item>Orders</NavDropdown.Item>
+                                </LinkContainer>
+
+                            </NavDropdown>
+                        )}
                         </Nav>
                         
                     </Navbar.Collapse>
