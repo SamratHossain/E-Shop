@@ -78,6 +78,7 @@ def updateUser(request, pk):
     user.is_staff = data['isAdmin']
 
     user.save()
+    serializer = UserSerializer(user, many=False)
     
     return Response(serializer.data)   
 

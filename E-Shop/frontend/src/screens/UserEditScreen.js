@@ -5,10 +5,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 import FormContainer from '../components/FormContainer'
-import { getUserDetails } from '../action/userActions'
+import { getUserDetails, updateUser } from '../action/userActions'
+import {USER_UPDATE_RESET} from '../constants/userConstans'
 
 
-function UserEditScreen({match}) {
+function UserEditScreen({match, history}) {
 
     const userId = match.params.id
 
@@ -21,10 +22,17 @@ function UserEditScreen({match}) {
     const userDetails = useSelector(state => state.userDetails)
     const { error, loading, user } = userDetails
 
+    const userUpdate = useSelector(state => state.userUpdate)
+    const { error : errorUpdate, loading : loadingUpdate, success : successUpdate } = userUpdate
+
     
 
     useEffect(() => {
 
+        if(successUpdate){
+            dispatch({type: USER_UPDATE_RESET})
+            history.push('/admin/userlist')
+        }else{
             if (!user.name || user._id !== Number(userId)) {
                 dispatch(getUserDetails(userId))
             } else {
@@ -32,10 +40,12 @@ function UserEditScreen({match}) {
                 setEmail(user.email)
                 setIsAdmin(user.isAdmin)
             }
-        },[user, userId])
+        }   
+        },[user, userId, successUpdate, history])
 
     const submitHandler = (e) => {
         e.preventDefault()
+        dispatch(updateUser({_id:user._id, name, email, isAdmin}))
         
     }
 
@@ -47,7 +57,8 @@ function UserEditScreen({match}) {
 
             <FormContainer>
                 <h1>Edit User</h1>
-
+                {loadingUpdate && <Loader />}
+                {errorUpdate && <Message variant='danger'>{errorUpdate}</Message>}
 
                 {loading ? <Loader /> : error ? <Message variant='danger'>{error}</Message>
                     : (
