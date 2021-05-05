@@ -10,14 +10,17 @@ import axios from 'axios'
 
 
 
-function HomeScreen() {
+function HomeScreen({history}) {
    const dispatch = useDispatch()
    const productList = useSelector(state => state.productList)
    const {error, loading, products} = productList
 
+   let keyword = history.location.search
+   
+
     useEffect(() => {
-        dispatch(listProduct())
-    }, [])
+        dispatch(listProduct(keyword))
+    }, [dispatch, keyword])
 
 
     return (
