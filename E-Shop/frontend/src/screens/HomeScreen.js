@@ -3,6 +3,7 @@ import {Row, Col} from 'react-bootstrap'
 import Product from '../components/Product'
 import {useDispatch, useSelector} from 'react-redux'
 import {listProduct} from '../action/productActions'
+import ProductCarousel from '../components/ProductCarousel'
 import Paginate from '../components/Paginate'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
@@ -26,6 +27,8 @@ function HomeScreen({history}) {
 
     return (
         <div>
+            {!keyword && <ProductCarousel />}
+            <h1>Latest Product</h1>
             {
                 loading ? <Loader />
                 : error ? <Message variant='danger'> {error}</Message>
